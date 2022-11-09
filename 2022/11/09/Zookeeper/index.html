@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="John Doe" />
+  <meta name="description" content="" />
+  
+  
+  <title>
+    
+      Zookeeper 
+      
+      
+      |
+    
+     YueCang&#39;s blog
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+    
+<link rel="stylesheet" href="/css/figcaption/mac-block.css">
+
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/suolong.jpg" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Yue Cang</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Zookeeper</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-11-09 18:27:07
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="Zookeeper教程"><a href="#Zookeeper教程" class="headerlink" title="Zookeeper教程"></a>Zookeeper教程</h1><p><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">Zookeeper官方网站</a></p>
+<h2 id="重点内容"><a href="#重点内容" class="headerlink" title="重点内容"></a>重点内容</h2><ul>
+<li>Zookeeper分布式锁案例</li>
+<li>Paxos算法</li>
+<li>ZAB协议</li>
+<li>CAP</li>
+<li>源码（ZK服务端初始化源码、服务端加载数据源码、选举算法、状态同步算法、Leader启动算法、Follower启动源码、客户端启动源码）</li>
+</ul>
+<h2 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h2><ol>
+<li>Zookeeper：一个Leader，多个Follower组成的集群</li>
+<li>集群只要<strong>半数以上节点存活</strong>，zk集群服务就能正常使用，所以zk适合安装奇数台服务器</li>
+<li>全局数据一致：每个server保存一份相同的数据副本，client无论连接哪个server，数据都是一致的</li>
+<li>更新请求顺序执行，来自同一个client的更新请求按其发送顺序一次执行</li>
+<li>数据更新原子性，一次数据更新要么成功，要么失败</li>
+<li>实时性，在一定时间范围内，client能读到最新数据</li>
+</ol>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>统一命名服务</li>
+<li>统一配置管理</li>
+<li>统一集群管理</li>
+<li>服务器动态上下线</li>
+<li>软负载均衡</li>
+</ul>
+<h2 id="单机安装"><a href="#单机安装" class="headerlink" title="单机安装"></a>单机安装</h2><ol>
+<li><p>安装JDK</p>
+</li>
+<li><p>上传 <strong>apache-zookeeper-3.5.7-bin.tar.gz</strong>，并解压到指定路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf apache-zookeeper-3.5.7-bin.tar.gz -C /opt/module</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改配置文件，修改数据存储路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建数据存储文件夹</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# mkdir zkData</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改zk数据存储路径，其余参数不需要修改</span></span><br><span class="line">[root@hadoop01 conf]# vim zoo.cfg</span><br><span class="line">dataDir=/opt/module/zookeeper-3.5.7/zkData</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>启动zk服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动zk服务</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkServer.sh start conf/zoo.cfg </span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看zk服务状态</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkServer.sh status</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: standalone</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止zk服务</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkServer.sh stop</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>查看zk进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">jps</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# jps -l</span><br><span class="line">2368 org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br><span class="line">2445 sun.tools.jps.Jps</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="配置参数详解"><a href="#配置参数详解" class="headerlink" title="配置参数详解"></a>配置参数详解</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">通信心跳时间，zk服务器与客户端心跳时间，单位毫秒</span></span><br><span class="line">tickTime=2000</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">LF(Leader、Follower)初始通信时限，10个心跳时间（tickTime的数量）</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">即容忍多少个心跳时限连接</span></span><br><span class="line">initLimit=10</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">LF同步通信时限，若超过该时限，Leader认为Follower挂掉，从服务器列表中删除Follower</span></span><br><span class="line">syncLimit=5</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">保存zk中的数据</span></span><br><span class="line">dataDir=/opt/module/zookeeper-3.5.7/zkData</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">客户端连接端口，一般不修改</span></span><br><span class="line">clientPort=2181</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="集群安装"><a href="#集群安装" class="headerlink" title="集群安装"></a>集群安装</h2><ol>
+<li><p>集群规划</p>
+<p><strong>思考：如果是10台服务器，需要安装多少台zk？</strong></p>
+</li>
+<li><p>配置好同步分发文件脚本</p>
+<p><a href="xsync.md" title=":include">同步脚本</a></p>
+</li>
+<li><p>解压安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf apache-zookeeper-3.5.7-bin.tar.gz -C /opt/module</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>配置服务器编号</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建数据存储目录</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# mkdir zkData</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在数据存储路径下创建myid文件,确保每台服务器均有唯一编号即可</span></span><br><span class="line">[root@hadoop01 zkData]# vim myid</span><br><span class="line">1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">同步分发配置过的zk</span></span><br><span class="line">[root@hadoop01 module]# xsync zookeeper-3.5.7/</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>配置zoo.cfg</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tickTime=2000</span><br><span class="line"></span><br><span class="line">initLimit=10</span><br><span class="line"></span><br><span class="line">syncLimit=5</span><br><span class="line"></span><br><span class="line">dataDir=/opt/module/zookeeper-3.5.7/zkData</span><br><span class="line"></span><br><span class="line">clientPort=2181</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加以下内容</span></span><br><span class="line">server.1=hadoop01:2888:3888</span><br><span class="line">server.2=hadoop02:2888:3888</span><br></pre></td></tr></table></figure>
+
+<p><strong>server.A&#x3D;B:C:D，参数解释</strong></p>
+<ul>
+<li>A：表示第几台服务器，即myid所配置的对应值</li>
+<li>B：服务器地址</li>
+<li>C：Follower与Leader交换信息的端口</li>
+<li>D：如果集群中的Leader挂掉，需要使用新的端口进行重新选举，选出新的Leader</li>
+</ul>
+</li>
+<li><p>启动集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">每一台服务器全部启动zk服务即可</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkServer.sh start conf/zoo.cfg </span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line"></span><br><span class="line">[root@hadoop02 zookeeper-3.5.7]# bin/zkServer.sh start conf/zoo.cfg</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看zk服务状态</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkServer.sh status</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: follower</span><br><span class="line"></span><br><span class="line">[root@hadoop02 zookeeper-3.5.7]# bin/zkServer.sh status</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /opt/module/zookeeper-3.5.7/bin/../conf/zoo.cfg</span><br><span class="line">Client port found: 2181. Client address: localhost.</span><br><span class="line">Mode: leader</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="zookeeper可视化工具（-PrettyZoo-）"><a href="#zookeeper可视化工具（-PrettyZoo-）" class="headerlink" title="zookeeper可视化工具（  PrettyZoo ）"></a>zookeeper可视化工具（  PrettyZoo ）</h2><p>PrettyZoo下载地址：<a target="_blank" rel="noopener" href="https://github.com/vran-dev/PrettyZoo/releases">https://github.com/vran-dev/PrettyZoo/releases</a></p>
+<p>Windows：prettyZoo-win.msi</p>
+<p>Mac: prettyZoo-mac.dmg</p>
+<p>Linux: prettyZoo-rpm &#x2F; prettyZoo.deb</p>
+<h2 id="ZK选举机制"><a href="#ZK选举机制" class="headerlink" title="ZK选举机制"></a>ZK选举机制</h2><p><img src="/2022/11/09/Zookeeper/1638500972903.png" alt="1638500972903"></p>
+<h3 id="第一次启动"><a href="#第一次启动" class="headerlink" title="第一次启动"></a>第一次启动</h3><ol>
+<li>Server1启动，发起第一次选举，Server1投票给自己，此时Server1为1票，不够半数以上（3票），选举无法完成，Server1保持LOOKING状态</li>
+<li>Server2启动，发起选举，<strong>Server1和Server2分别投自己一票，1和2交换选票信息，1发现2投票的服务器的myid比自己选举投票的服务器myid大，1将自己的选票投给2，此时1为0票，2为2票，仍然未达到半数以上</strong>，选举未完成，1和2处在LOOKING状态</li>
+<li>Server3启动，发起投票，<strong>1（投了2）、2（投了2）和3交换选票信息，发现3选举的服务器myid比自己选举投票的服务器myid大，1、2改投3，此时1为0票，2为0票，3为3票（达到半数以上）</strong>，1、2修改状态为FOLLWING，3修改状态为LEADING</li>
+<li>Server4启动，发起一次选举，<strong>此时1、2、3没有处在LOOKING状态，不修改选票信息，4少数服从多数，将选票投给3，此时3为4票，4为0票，4修改状态为FOLLWING</strong></li>
+<li>Server5启动，发起一次选举，此时1、2、3、4没有处在LOOKING状态，不修改选票信息，5少数服从多数，将选票投给3，此时3为5票，5为0票，5修改状态为FOLLOWING</li>
+</ol>
+<h3 id="非第一次启动"><a href="#非第一次启动" class="headerlink" title="非第一次启动"></a>非第一次启动</h3><ol>
+<li><p>当ZK集群中的一台S服务器出现以下两种情况时，就会开始进入Leader选举：</p>
+<ul>
+<li>服务器初始化，相当于添加服务器到ZK集群</li>
+<li>服务器运行期间无法和Leader服务器保持连接</li>
+</ul>
+</li>
+<li><p>当一台机器进入Leader选举流程时，当前集群可能存在以下两种状态：</p>
+<ul>
+<li><p>集群中的Leader仍然存在。服务器试图选举时，会被告知Leader的信息，对该服务器来说，只需要和Leader建立连接，并进行状态的同步即可</p>
+</li>
+<li><p>集群中的Leader确实不存在了。</p>
+<p>假设ZK集群有5台服务器组成，SID分别为1、2、3、4、5，ZXID分别为8、8、8、7、7，并且SID为3的服务器是Leader。某一时刻3、5服务器出现故障，因为开始进行Leader选举：</p>
+<pre><code>                    括号中的参数顺序为：（EPOCH，ZXID，SID）
+</code></pre>
+<p>SID为1、2、4的机器投票情况为：（1，8，1） （1，8，2）（1，7，4）<strong>最终2为Leader</strong></p>
+<p><strong>比较顺序为：</strong></p>
+<ul>
+<li><strong>EPOCH大时，投票给EPOCH大的</strong></li>
+<li><strong>EPOCH相同，投票给ZXID大的</strong></li>
+<li><strong>EPOCH、ZXID相同时，投给SID大的</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="集群启动脚本"><a href="#集群启动脚本" class="headerlink" title="集群启动脚本"></a>集群启动脚本</h2><p>编写集群启动脚本，记得修改脚本中的主机名称为对应集群的主机名称</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">case $1 in</span><br><span class="line">&quot;start&quot;)&#123;</span><br><span class="line">	for i in hadoop01 hadoop02</span><br><span class="line">	do</span><br><span class="line">		echo -------------------- Zookeeper $i 启动 ------------------------</span><br><span class="line">		ssh $i &quot;/opt/module/zookeeper-3.5.7/bin/zkServer.sh start /opt/module/zookeeper-3.5.7/conf/zoo.cfg&quot;</span><br><span class="line">	done</span><br><span class="line">&#125;</span><br><span class="line">;;</span><br><span class="line">&quot;stop&quot;)&#123;</span><br><span class="line">	for i in hadoop01 hadoop02</span><br><span class="line">	do</span><br><span class="line">		echo -------------------- Zookeeper $i 停止 ------------------------</span><br><span class="line">		ssh $i &quot;/opt/module/zookeeper-3.5.7/bin/zkServer.sh stop&quot;</span><br><span class="line">	done</span><br><span class="line">&#125;</span><br><span class="line">;;</span><br><span class="line">&quot;status&quot;)&#123;</span><br><span class="line">	for i in hadoop01 hadoop02</span><br><span class="line">	do</span><br><span class="line">		echo -------------------- Zookeeper $i 状态 ------------------------</span><br><span class="line">		ssh $i &quot;/opt/module/zookeeper-3.5.7/bin/zkServer.sh status&quot;</span><br><span class="line">	done</span><br><span class="line">&#125;</span><br><span class="line">;;</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+<h2 id="ZK客户端"><a href="#ZK客户端" class="headerlink" title="ZK客户端"></a>ZK客户端</h2><ul>
+<li><p>启动客户端以及节点的相关参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动客户端</span></span><br><span class="line">[root@hadoop01 ~]# cd /opt/module/zookeeper-3.5.7</span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkCli.sh -server hadoop01:2181</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动后查看节点参数</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 3] ls -s /</span><br><span class="line">[zookeeper]</span><br><span class="line">cZxid = 0x0		# 创建节点的事务ID</span><br><span class="line">ctime = Thu Jan 01 08:00:00 CST 1970	# znode被创建的毫秒数</span><br><span class="line">mZxid = 0x0		# znode最后更新的事务ID</span><br><span class="line">mtime = Thu Jan 01 08:00:00 CST 1970	# znode最后更新的时间</span><br><span class="line">pZxid = 0x0		# znode最后更新的子节点的zxid</span><br><span class="line">cversion = -1	# znode子节点变化号，znode子节点修改次数</span><br><span class="line">dataVersion = 0	# znode数据变化号</span><br><span class="line">aclVersion = 0	# znode访问控制列表的变化号</span><br><span class="line">ephemeralOwner = 0x0 # 如果是临时节点，这个是znode拥有者的session id。如果不是临时节点则为0</span><br><span class="line">dataLength = 0	# znode的数据长度</span><br><span class="line">numChildren = 1	# znode的子节点数量</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取节点的值</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 12] get -s /sanguo</span><br><span class="line">sanguo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改节点的值</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 2] set /sanguo &quot;luoguanzhong&quot;</span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 3] get /sanguo</span><br><span class="line">luoguanzhong</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除单个节点</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 4] delete /sanguo/weiguo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">递归删除节点及子节点</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 5] deleteall /sanguo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监听器</p>
+<ul>
+<li>监听节点的值</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">监听节点值得变化,注册一次就只能够监听一次</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get -w /sanguo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">当节点的之发生变化时</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] </span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected type:NodeDataChanged path:/sanguo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>监听节点子节点的变化</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">监听节点值得变化,注册一次就只能够监听一次</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] ls -w /sanguo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">当节点的之发生变化时</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 2] </span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected type:NodeDataChanged path:/sanguo</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="ZK节点类型"><a href="#ZK节点类型" class="headerlink" title="ZK节点类型"></a>ZK节点类型</h3><ul>
+<li>持久（Persistent）：客户端和服务端断开连接后，创建的节点不删除</li>
+<li>临时（Ephemeral）：客户端和服务端断开连接后，创建的节点被删除</li>
+<li>无序节点：创建的节点名称后不自动添加序号</li>
+<li>有序节点：创建的节点名称后自动添加序号</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动客户端</span></span><br><span class="line">[root@hadoop01 zookeeper-3.5.7]# bin/zkCli.sh -server hadoop01:2181</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建持久节点（无序）</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] create /sanguo &quot;sanguo&quot;</span><br><span class="line"></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] ls /</span><br><span class="line">[sanguo, zookeeper]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建临时节点（无序）</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] create -e /xiyou &quot;xiyou&quot;</span><br><span class="line"></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] ls /</span><br><span class="line">[sanguo, xiyou, zookeeper]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建有序持久节点</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] create -s /sanguo &quot;sanguo&quot;</span><br><span class="line"></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 6] ls /</span><br><span class="line">[sanguo, sanguo0000000002, xiyou, zookeeper]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建有序临时节点</span></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 0] create -e -s /xiyou &quot;xiyou&quot;</span><br><span class="line"></span><br><span class="line">[zk: hadoop01:2181(CONNECTED) 8] ls /</span><br><span class="line">[sanguo, sanguo0000000002, xiyou, xiyou0000000003, zookeeper]</span><br></pre></td></tr></table></figure>
+
+<h3 id="ZK客户端API"><a href="#ZK客户端API" class="headerlink" title="ZK客户端API"></a>ZK客户端API</h3><ul>
+<li>依赖</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.logging.log4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>log4j-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.12.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.12<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>compile<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.zookeeper<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>zookeeper<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.5.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>相关代码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bin.zk;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.data.Stat;</span><br><span class="line"><span class="keyword">import</span> org.junit.Before;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: zk客户端</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> YueCang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2021/12/6 15:41</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ZkClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">connectString</span> <span class="operator">=</span> <span class="string">&quot;192.168.24.10:2181,192.168.24.11:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sessionTimeout</span> <span class="operator">=</span> <span class="number">60</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zkClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        zkClient = <span class="keyword">new</span> <span class="title class_">ZooKeeper</span>(connectString, sessionTimeout, <span class="keyword">new</span> <span class="title class_">Watcher</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(WatchedEvent watchedEvent)</span> &#123;</span><br><span class="line">                <span class="comment">// 相关监听代码</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">create</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">nodeCreate</span> <span class="operator">=</span> zkClient.create(<span class="string">&quot;/bin&quot;</span>,</span><br><span class="line">                <span class="string">&quot;ceshi&quot;</span>.getBytes(),</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE,</span><br><span class="line">                CreateMode.PERSISTENT_SEQUENTIAL);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">getChildren</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        List&lt;String&gt; children = zkClient.getChildren(<span class="string">&quot;/&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String child : children) &#123;</span><br><span class="line">            System.out.println(child);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">exists</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        <span class="type">Stat</span> <span class="variable">stat</span> <span class="operator">=</span> zkClient.exists(<span class="string">&quot;/bin&quot;</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(stat == <span class="literal">null</span> ? <span class="string">&quot;not exist&quot;</span> : <span class="string">&quot;exist&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ZK的写流程"><a href="#ZK的写流程" class="headerlink" title="ZK的写流程"></a>ZK的写流程</h3><ul>
+<li><p><strong>将写入请求发送给Leader</strong></p>
+<p><img src="/2022/11/09/Zookeeper/1638862817737.png" alt="1638862817737"></p>
+<ol>
+<li>client将写入请求发送给Leader，Leader自身首先写入</li>
+<li>Leader将写入请求发送给Follower，Follower写入</li>
+<li>Follower写入后应答Leader</li>
+<li>当ZK Server写入的数量达到半数以上，应答Client</li>
+<li>其他未写完的Server继续写入数据</li>
+<li>写完后应答Leader</li>
+</ol>
+</li>
+<li><p><strong>将写入请求发送给Follower</strong></p>
+<p><img src="/2022/11/09/Zookeeper/1638865261438.png" alt="1638865261438"></p>
+</li>
+</ul>
+<h2 id="案例一：监听ZK服务器上下限"><a href="#案例一：监听ZK服务器上下限" class="headerlink" title="案例一：监听ZK服务器上下限"></a>案例一：监听ZK服务器上下限</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bin.case1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 服务器注册</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> YueCang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2021/12/7 17:38</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DistributeServer</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">connectString</span> <span class="operator">=</span> <span class="string">&quot;hadoop01:2181,hadoop02:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sessionTimeout</span> <span class="operator">=</span> <span class="number">2000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, InterruptedException, KeeperException &#123;</span><br><span class="line">        <span class="type">DistributeServer</span> <span class="variable">server</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DistributeServer</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.连接zk</span></span><br><span class="line">        server.getConnect();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.注册</span></span><br><span class="line">        server.regist(args[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3.处理业务</span></span><br><span class="line">        server.business();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">business</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">regist</span><span class="params">(String hostName)</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">server</span> <span class="operator">=</span> zk.create(<span class="string">&quot;/servers/server&quot;</span>,</span><br><span class="line">                hostName.getBytes(),</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE,</span><br><span class="line">                CreateMode.EPHEMERAL_SEQUENTIAL);</span><br><span class="line"></span><br><span class="line">        System.out.println(hostName + <span class="string">&quot; is online&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">getConnect</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        zk = <span class="keyword">new</span> <span class="title class_">ZooKeeper</span>(connectString, sessionTimeout, <span class="keyword">new</span> <span class="title class_">Watcher</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(WatchedEvent watchedEvent)</span> &#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bin.case1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.KeeperException;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.WatchedEvent;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.Watcher;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.ZooKeeper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: 客户端监听</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> YueCang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2021/12/7 17:02</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DistributeClient</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">connectString</span> <span class="operator">=</span> <span class="string">&quot;hadoop01:2181,hadoop02:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">sessionTimeout</span> <span class="operator">=</span> <span class="number">2000</span>;</span><br><span class="line">    <span class="keyword">private</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException, KeeperException, IOException &#123;</span><br><span class="line">        <span class="type">DistributeClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DistributeClient</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.获取连接</span></span><br><span class="line">        client.getConnect();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.获取服务器列表</span></span><br><span class="line">        client.getServerList();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 3.处理业务</span></span><br><span class="line">        client.business();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">business</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">        Thread.sleep(Long.MAX_VALUE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">getServerList</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        List&lt;String&gt; children = zk.getChildren(<span class="string">&quot;/servers&quot;</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">        ArrayList&lt;String&gt; servers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String child : children) &#123;</span><br><span class="line">            <span class="type">byte</span>[] data = zk.getData(<span class="string">&quot;/servers/&quot;</span> + child, <span class="literal">false</span>, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">            servers.add(<span class="keyword">new</span> <span class="title class_">String</span>(data));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        System.out.println(servers);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">getConnect</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        zk = <span class="keyword">new</span> <span class="title class_">ZooKeeper</span>(connectString, sessionTimeout, <span class="keyword">new</span> <span class="title class_">Watcher</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(WatchedEvent watchedEvent)</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    getServerList();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (KeeperException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ZK分布式锁案例"><a href="#ZK分布式锁案例" class="headerlink" title="ZK分布式锁案例"></a>ZK分布式锁案例</h2><p><img src="/2022/11/09/Zookeeper/1638931402278.png" alt="1638931402278">  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bin.case2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.*;</span><br><span class="line"><span class="keyword">import</span> org.apache.zookeeper.data.Stat;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Collections;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> YueCang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2021/12/8 10:47</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">DistributeLock</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">connectString</span> <span class="operator">=</span> <span class="string">&quot;hadoop01:2181,hadoop02:2181&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">sessionTimeout</span> <span class="operator">=</span> <span class="number">2000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ZooKeeper zk;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">CountDownLatch</span> <span class="variable">countDownLatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="type">CountDownLatch</span> <span class="variable">waitLatch</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CountDownLatch</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">private</span> String waitPath;</span><br><span class="line">    <span class="keyword">private</span> String currentMode;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">DistributeLock</span><span class="params">()</span> <span class="keyword">throws</span> IOException, InterruptedException, KeeperException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 连接ZK</span></span><br><span class="line">        zk = <span class="keyword">new</span> <span class="title class_">ZooKeeper</span>(connectString, sessionTimeout, <span class="keyword">new</span> <span class="title class_">Watcher</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(WatchedEvent watchedEvent)</span> &#123;</span><br><span class="line">                <span class="comment">// countDownLatch 释放锁</span></span><br><span class="line">                <span class="keyword">if</span>(watchedEvent.getState() == Event.KeeperState.SyncConnected)&#123;</span><br><span class="line">                    countDownLatch.countDown();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// waitLatch 释放锁</span></span><br><span class="line">                <span class="keyword">if</span>(watchedEvent.getType() == Event.EventType.NodeDeleted</span><br><span class="line">                        &amp;&amp; watchedEvent.getPath().equals(waitPath));</span><br><span class="line">                waitLatch.countDown();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 等待ZK连接</span></span><br><span class="line">        countDownLatch.await();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断根节点/locks是否存在</span></span><br><span class="line">        <span class="type">Stat</span> <span class="variable">rootExists</span> <span class="operator">=</span> zk.exists(<span class="string">&quot;/locks&quot;</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根节点不存在就创建根节点</span></span><br><span class="line">        <span class="keyword">if</span>(rootExists == <span class="literal">null</span>)&#123;</span><br><span class="line">            zk.create(<span class="string">&quot;/locks&quot;</span>,<span class="string">&quot;locks&quot;</span>.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE,CreateMode.PERSISTENT);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 加锁</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">zkLock</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        <span class="comment">// 创建有序临时节点</span></span><br><span class="line">        currentMode = zk.create(<span class="string">&quot;/locks/seq-&quot;</span>,</span><br><span class="line">                <span class="literal">null</span>,</span><br><span class="line">                ZooDefs.Ids.OPEN_ACL_UNSAFE,</span><br><span class="line">                CreateMode.EPHEMERAL_SEQUENTIAL);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断当前节点是否是最小节点</span></span><br><span class="line">        List&lt;String&gt; children = zk.getChildren(<span class="string">&quot;/locks&quot;</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(children.size() == <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="comment">// 如果只有一个节点那么它必然是最小节点，直接返回即可</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            Collections.sort(children);</span><br><span class="line">            <span class="type">String</span> <span class="variable">currentNode</span> <span class="operator">=</span> currentMode.substring(<span class="string">&quot;/locks/&quot;</span>.length());</span><br><span class="line">            <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> children.indexOf(currentNode);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(index == -<span class="number">1</span>)&#123;</span><br><span class="line">                <span class="comment">// 索引为-1说明数据有问题</span></span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;参数异常&quot;</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(index == <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="comment">// 索引为0说明该节点就是最小节点</span></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 监听前一个节点变化</span></span><br><span class="line">                waitPath = <span class="string">&quot;/locks/&quot;</span> + children.get(index -<span class="number">1</span>);</span><br><span class="line">                zk.getData(waitPath,<span class="literal">true</span>,<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 等待前一步骤执行完毕，在执行</span></span><br><span class="line">                waitLatch.await();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 解锁</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">zkUnlock</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, KeeperException &#123;</span><br><span class="line">        <span class="comment">// 删除节点</span></span><br><span class="line">        zk.delete(currentMode,-<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, InterruptedException, KeeperException &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">DistributeLock</span> <span class="variable">lock1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DistributeLock</span>();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    lock1.zkLock();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1获取锁&quot;</span>);</span><br><span class="line">                    Thread.sleep(<span class="number">5</span>*<span class="number">1000</span>);</span><br><span class="line">                    lock1.zkUnlock();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1释放锁&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (KeeperException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> <span class="type">DistributeLock</span> <span class="variable">lock2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DistributeLock</span>();</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    lock2.zkLock();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2获取锁&quot;</span>);</span><br><span class="line">                    Thread.sleep(<span class="number">5</span>*<span class="number">1000</span>);</span><br><span class="line">                    lock2.zkUnlock();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2释放锁&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (KeeperException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分布式锁成熟框架Curator"><a href="#分布式锁成熟框架Curator" class="headerlink" title="分布式锁成熟框架Curator"></a>分布式锁成熟框架Curator</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-framework<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-recipes<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.curator<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>curator-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.3.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.bin.case3;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.curator.RetryPolicy;</span><br><span class="line"><span class="keyword">import</span> org.apache.curator.framework.CuratorFramework;</span><br><span class="line"><span class="keyword">import</span> org.apache.curator.framework.CuratorFrameworkFactory;</span><br><span class="line"><span class="keyword">import</span> org.apache.curator.framework.recipes.locks.InterProcessMutex;</span><br><span class="line"><span class="keyword">import</span> org.apache.curator.retry.ExponentialBackoffRetry;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span>: TODO</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> YueCang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2021/12/9 10:03</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CuratorLock</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">InterProcessMutex</span> <span class="variable">lock1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InterProcessMutex</span>(getCuratorFramework(), <span class="string">&quot;/locks&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">InterProcessMutex</span> <span class="variable">lock2</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InterProcessMutex</span>(getCuratorFramework(), <span class="string">&quot;/locks&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    lock1.acquire();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1获取到锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    lock1.acquire();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1再次获取到锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    Thread.sleep(<span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">                    lock1.release();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1释放锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    lock1.release();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程1再次释放锁&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">Thread</span>(<span class="keyword">new</span> <span class="title class_">Runnable</span>() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    lock2.acquire();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2获取到锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    lock2.acquire();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2再次获取到锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    Thread.sleep(<span class="number">5000</span>);</span><br><span class="line"></span><br><span class="line">                    lock2.release();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2释放锁&quot;</span>);</span><br><span class="line"></span><br><span class="line">                    lock2.release();</span><br><span class="line">                    System.out.println(<span class="string">&quot;线程2再次释放锁&quot;</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CuratorFramework <span class="title function_">getCuratorFramework</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="type">ExponentialBackoffRetry</span> <span class="variable">retryPolicy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ExponentialBackoffRetry</span>(<span class="number">3000</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="type">CuratorFramework</span> <span class="variable">client</span> <span class="operator">=</span> CuratorFrameworkFactory.builder()</span><br><span class="line">                .connectString(<span class="string">&quot;hadoop01:2181,hadoop02:2181&quot;</span>)</span><br><span class="line">                .connectionTimeoutMs(<span class="number">2000</span>)</span><br><span class="line">                .sessionTimeoutMs(<span class="number">2000</span>)</span><br><span class="line">                .retryPolicy(retryPolicy)</span><br><span class="line">                .build();</span><br><span class="line"></span><br><span class="line">        client.start();</span><br><span class="line">        System.out.println(<span class="string">&quot;Zookeeper启动成功&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> client;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="企业面试题"><a href="#企业面试题" class="headerlink" title="企业面试题"></a>企业面试题</h2><h3 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h3><p>选举机制，超过半数的投票通过，即通过</p>
+<ol>
+<li><p>第一次启动选举规则：</p>
+<p>投票过半数时，SID（服务器id）大的胜出</p>
+</li>
+<li><p>第二次启动选举规则：</p>
+<ul>
+<li>Epoch大的直接胜出</li>
+<li>Epoch相同，ZXID（事务id）大的胜出</li>
+<li>ZXID相同，SID（服务器id）大的胜出</li>
+</ul>
+</li>
+</ol>
+<h3 id="生产环境下集群安装多少台ZK合适"><a href="#生产环境下集群安装多少台ZK合适" class="headerlink" title="生产环境下集群安装多少台ZK合适"></a>生产环境下集群安装多少台ZK合适</h3><ul>
+<li>安装奇数台</li>
+<li>生产经验<ul>
+<li>10台服务器，3台zk</li>
+<li>20台服务器，5台zk</li>
+<li>100台服务器，11台zk</li>
+<li>200台服务器，11台zk</li>
+</ul>
+</li>
+</ul>
+<p><strong>Notes：服务器台数多的<code>好处</code>：提高了可靠性，<code>坏处</code>：提高了通信延迟</strong></p>
+<h2 id="————-源码学习-————"><a href="#————-源码学习-————" class="headerlink" title="————-  源码学习 ————-"></a>————-  源码学习 ————-</h2><h2 id="拜占庭将军问题"><a href="#拜占庭将军问题" class="headerlink" title="拜占庭将军问题"></a>拜占庭将军问题</h2><blockquote>
+<p>拜占庭将军问题（Byzantine failures），是由莱斯利·兰伯特提出的点对点通信中的基本问题。含义是在存在消息丢失的不可靠信道上试图通过消息传递的方式达到一致性是不可能的 </p>
+</blockquote>
+<h2 id="Paxos算法"><a href="#Paxos算法" class="headerlink" title="Paxos算法"></a>Paxos算法</h2><p><strong><code>Paxos算法：</code>一种基于消息传递且具有高度容错特性的一致性算法</strong></p>
+<p><strong><code>解决的问题：</code>如何快速正确的在一个分布式系统中对某个数据值达成一致性，并且保证不论发生任何异常，都不会破坏整个系统的一致性</strong></p>
+<p><strong>在一个Paxos算法系统中，首先将所有节点划分为Proposer（提议者），Acceptor（接收者），Learner（学习者）。</strong>（<strong>每个节点可能身兼数职</strong>）</p>
+<ul>
+<li>一个完整的Paxos算法流程分为三个阶段：</li>
+</ul>
+<h2 id="ZAB协议"><a href="#ZAB协议" class="headerlink" title="ZAB协议"></a>ZAB协议</h2><p><strong>ZAB协议内容：消息广播、崩溃恢复</strong></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/09/clickhouse%E6%95%99%E7%A8%8B/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-11-09 18:27:07
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Zookeeper%E6%95%99%E7%A8%8B"><span class="toc-text">Zookeeper教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E5%86%85%E5%AE%B9"><span class="toc-text">重点内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="toc-text">工作机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E5%AE%89%E8%A3%85"><span class="toc-text">单机安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-text">配置参数详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85"><span class="toc-text">集群安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zookeeper%E5%8F%AF%E8%A7%86%E5%8C%96%E5%B7%A5%E5%85%B7%EF%BC%88-PrettyZoo-%EF%BC%89"><span class="toc-text">zookeeper可视化工具（  PrettyZoo ）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">ZK选举机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%90%AF%E5%8A%A8"><span class="toc-text">第一次启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%9E%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%90%AF%E5%8A%A8"><span class="toc-text">非第一次启动</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC"><span class="toc-text">集群启动脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-text">ZK客户端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ZK%E8%8A%82%E7%82%B9%E7%B1%BB%E5%9E%8B"><span class="toc-text">ZK节点类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZK%E5%AE%A2%E6%88%B7%E7%AB%AFAPI"><span class="toc-text">ZK客户端API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ZK%E7%9A%84%E5%86%99%E6%B5%81%E7%A8%8B"><span class="toc-text">ZK的写流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E7%9B%91%E5%90%ACZK%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E4%B8%8B%E9%99%90"><span class="toc-text">案例一：监听ZK服务器上下限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZK%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%A1%88%E4%BE%8B"><span class="toc-text">ZK分布式锁案例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%88%90%E7%86%9F%E6%A1%86%E6%9E%B6Curator"><span class="toc-text">分布式锁成熟框架Curator</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%81%E4%B8%9A%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="toc-text">企业面试题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-text">选举机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E4%B8%8B%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85%E5%A4%9A%E5%B0%91%E5%8F%B0ZK%E5%90%88%E9%80%82"><span class="toc-text">生产环境下集群安装多少台ZK合适</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%94%E2%80%94%E2%80%94%E2%80%94-%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0-%E2%80%94%E2%80%94%E2%80%94%E2%80%94"><span class="toc-text">————-  源码学习 ————-</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%9C%E5%8D%A0%E5%BA%AD%E5%B0%86%E5%86%9B%E9%97%AE%E9%A2%98"><span class="toc-text">拜占庭将军问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Paxos%E7%AE%97%E6%B3%95"><span class="toc-text">Paxos算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ZAB%E5%8D%8F%E8%AE%AE"><span class="toc-text">ZAB协议</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          <a title="github" target="_blank" rel="noopener" href="https://yuecang.github.io">
+            <i class="iconfont icon-github"></i>
+          </a>
+        </li>
+      
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://yuecang.github.io">Copyright © 2022 Yue Cang</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="Search...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Zookeeper + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F09%2FZookeeper%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/09/Zookeeper/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
