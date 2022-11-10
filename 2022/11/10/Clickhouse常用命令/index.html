@@ -11,6 +11,11 @@
   
   <title>
     
+      Clickhouse常用命令 
+      
+      
+      |
+    
      YueCang&#39;s blog
   </title>
 
@@ -105,69 +110,142 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="Clickhouse常用命令">
-        <div class="time-m-d">2022-11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-            
-              
-                <span>Clickhouse常用命令</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Clickhouse常用命令</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-11-10 11:43:07
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/clickhouse/" title="clickhouse">
+                    #clickhouse
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="Flink 源码阅读">
-        <div class="time-m-d">2022-11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Flink-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
-            
-              
-                <span>Flink 源码阅读</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <h3 id="clickhouse常用命令"><a href="#clickhouse常用命令" class="headerlink" title="clickhouse常用命令"></a>clickhouse常用命令</h3><h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 追加新字段</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> [IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] name [type] [default_expr] [AFTER name_after]</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> colum1 String <span class="keyword">DEFAULT</span> <span class="string">&#x27;defaultvalue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改字段类型</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name MODIFY <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name [type] [default_expr];</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable MODIFY <span class="keyword">COLUMN</span> age Int32;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改备注</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name [<span class="keyword">ON</span> CLUSTER cluster] COMMENT <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name <span class="string">&#x27;some comment&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable COMMENT <span class="keyword">COLUMN</span> key <span class="string">&#x27;主键ID&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除已有字段</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> key;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改数据表名称</span></span><br><span class="line">RENAME <span class="keyword">TABLE</span> default.testcol_v1 <span class="keyword">TO</span> db_test.testcol_v2</span><br></pre></td></tr></table></figure>
+
+
       </div>
-    
-      <div class="post-item" title="Zookeeper">
-        <div class="time-m-d">2022-11-09</div>
-        <div class="title">
-          <a href="/2022/11/09/Zookeeper/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>Zookeeper</span>
-              
+              <a href="/2022/11/10/Flink-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-11-10 11:43:07
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/clickhouse/" title="clickhouse">
+                        #clickhouse
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="clickhouse教程">
-        <div class="time-m-d">2022-11-09</div>
-        <div class="title">
-          <a href="/2022/11/09/clickhouse%E6%95%99%E7%A8%8B/">
-            
-              
-                <span>clickhouse教程</span>
-              
-            
-          </a>
-        </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">clickhouse常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">基本操作</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-    <span class="page-num">1 / 1</span>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -415,6 +493,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F10%2FClickhouse%25E5%25B8%25B8%25E7%2594%25A8%25E5%2591%25BD%25E4%25BB%25A4%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>

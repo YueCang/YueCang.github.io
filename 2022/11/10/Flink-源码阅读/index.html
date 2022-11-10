@@ -11,6 +11,11 @@
   
   <title>
     
+      Flink 源码阅读 
+      
+      
+      |
+    
      YueCang&#39;s blog
   </title>
 
@@ -105,69 +110,159 @@
 
 
       <div class="flex-container">
-        <div class="container index">
-  <div class="post-list">
-    <!-- 遍历渲染文章 -->
-    
-      <div class="post-item" title="Clickhouse常用命令">
-        <div class="time-m-d">2022-11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-            
-              
-                <span>Clickhouse常用命令</span>
-              
-            
-          </a>
-        </div>
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Flink 源码阅读</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-11-10 09:50:14
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/Flink/" title="Flink">
+                    #Flink
+                  </a>
+                </span>
+                
+              </span>
+          
       </div>
-    
-      <div class="post-item" title="Flink 源码阅读">
-        <div class="time-m-d">2022-11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Flink-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
-            
-              
-                <span>Flink 源码阅读</span>
-              
-            
-          </a>
-        </div>
+      <div class="markdown-body">
+        <h2 id="一、项目导入"><a href="#一、项目导入" class="headerlink" title="一、项目导入"></a>一、项目导入</h2><ul>
+<li><p>从git上将源码clone下来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/apache/flink.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>clone完成后，导入IDEA中</p>
+<ol>
+<li>![截屏2022-11-10 16.17.04](Flink-源码阅读&#x2F;截屏2022-11-10 16.17.04-8068626.png)</li>
+<li>导入进来以后，需要配置Maven（如果使用IDEA自带Maven可以忽略）</li>
+<li>![截屏2022-11-10 16.19.36](Flink-源码阅读&#x2F;截屏2022-11-10 16.19.36-8068671.png)</li>
+</ol>
+</li>
+<li><p>导入完成后，右侧会出现Maven图标</p>
+</li>
+</ul>
+
       </div>
-    
-      <div class="post-item" title="Zookeeper">
-        <div class="time-m-d">2022-11-09</div>
-        <div class="title">
-          <a href="/2022/11/09/Zookeeper/">
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
             
-              
-                <span>Zookeeper</span>
-              
+              <a href="/2022/11/09/Zookeeper/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
             
-          </a>
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-11-10 09:50:14
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/Flink/" title="Flink">
+                        #Flink
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+              <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
+            
+          </div>
         </div>
-      </div>
+      
+    </div>
     
-      <div class="post-item" title="clickhouse教程">
-        <div class="time-m-d">2022-11-09</div>
-        <div class="title">
-          <a href="/2022/11/09/clickhouse%E6%95%99%E7%A8%8B/">
-            
-              
-                <span>clickhouse教程</span>
-              
-            
-          </a>
-        </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%AF%BC%E5%85%A5"><span class="toc-text">一、项目导入</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
       </div>
     
   </div>
-  <nav class="post-navigation">
-    
-    <span class="page-num">1 / 1</span>
-    
-  </nav>
-</div>
+
 
         
 <div class="footer">
@@ -415,6 +510,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Flink%20%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F10%2FFlink-%25E6%25BA%2590%25E7%25A0%2581%25E9%2598%2585%25E8%25AF%25BB%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/10/Flink-%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
