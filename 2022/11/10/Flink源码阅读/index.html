@@ -11,7 +11,7 @@
   
   <title>
     
-      hexo 常用命令 
+      Flink源码阅读 
       
       
       |
@@ -155,25 +155,25 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">hexo 常用命令</div>
+      <div class="post-title">Flink源码阅读</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2022-11-11 15:30:43
+          2022-11-10 09:50:14
         </span>
         
               <span class="post-tags">
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/hexo/" title="hexo">
-                    #hexo
+                  <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="大数据">
+                    #大数据
                   </a>
                 </span>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E5%BB%BA%E7%AB%99/" title="建站">
-                    #建站
+                  <a href="/tags/flink/" title="flink">
+                    #flink
                   </a>
                 </span>
                 
@@ -181,16 +181,27 @@
           
       </div>
       <div class="markdown-body">
-        <h3 id="官网文档"><a href="#官网文档" class="headerlink" title="官网文档"></a><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/commands">官网文档</a></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">本地调试启动</span></span><br><span class="line">hexo clear &amp;&amp; hexo server</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">部署</span></span><br><span class="line">hexo deploy / hexo d</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">新建笔记</span></span><br><span class="line">hexo new &quot;xxx&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">生成静态文件</span></span><br><span class="line">hexo generate / hexo g</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">引用站内文件内容</span></span><br><span class="line">&#123;% post_link post_name [title] %&#125;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">例子</span></span><br><span class="line">&#123;% post_link Zookeeper [zookeeper教程] %&#125;</span><br></pre></td></tr></table></figure>
-
-<p>例：引用站内文章：<a href="/2022/11/09/Zookeeper/" title="Zookeeper">[zookeeper教程]</a></p>
+        <h2 id="一、项目导入"><a href="#一、项目导入" class="headerlink" title="一、项目导入"></a>一、项目导入</h2><ul>
+<li><p>从git上将源码clone下来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/apache/flink.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>clone完成后，导入IDEA中</p>
+<ol>
+<li><img src="/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/1.png" alt="截屏2022-11-10 16.17.04"></li>
+<li>导入进来以后，需要配置Maven（如果使用IDEA自带Maven可以忽略）</li>
+<li><img src="/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/2.png" alt="截屏2022-11-10 16.19.36"></li>
+</ol>
+</li>
+<li><p>导入完成后，右侧会出现Maven图标</p>
+</li>
+</ul>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+              <a href="/2022/11/09/Zookeeper/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -199,21 +210,21 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2022-11-11 15:30:43
+              2022-11-10 09:50:14
             </span>
             
                   <span class="post-tags">
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/hexo/" title="hexo">
-                        #hexo
+                      <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="大数据">
+                        #大数据
                       </a>
                     </span>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E5%BB%BA%E7%AB%99/" title="建站">
-                        #建站
+                      <a href="/tags/flink/" title="flink">
+                        #flink
                       </a>
                     </span>
                     
@@ -221,6 +232,11 @@
               
           </div>
           <div class="post-foot-prev">
+            
+              <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
+                <span>Next</span>
+                <i class="iconfont icon-chevronright"></i>
+              </a>
             
           </div>
         </div>
@@ -234,7 +250,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E7%BD%91%E6%96%87%E6%A1%A3"><span class="toc-text">官网文档</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%AF%BC%E5%85%A5"><span class="toc-text">一、项目导入</span></a></li></ol>
       
     </div>
   </div>
@@ -513,12 +529,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + hexo%20%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F11%2Fhexo-%25E5%25B8%25B8%25E7%2594%25A8%25E5%2591%25BD%25E4%25BB%25A4%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F10%2FFlink%25E6%25BA%2590%25E7%25A0%2581%25E9%2598%2585%25E8%25AF%25BB%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/11/hexo-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
