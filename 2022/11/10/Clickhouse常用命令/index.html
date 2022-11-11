@@ -175,8 +175,27 @@
           
       </div>
       <div class="markdown-body">
-        <h3 id="clickhouse常用命令"><a href="#clickhouse常用命令" class="headerlink" title="clickhouse常用命令"></a>clickhouse常用命令</h3><h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 追加新字段</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> [IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] name [type] [default_expr] [AFTER name_after]</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable <span class="keyword">ADD</span> <span class="keyword">COLUMN</span> colum1 String <span class="keyword">DEFAULT</span> <span class="string">&#x27;defaultvalue&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改字段类型</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name MODIFY <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name [type] [default_expr];</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable MODIFY <span class="keyword">COLUMN</span> age Int32;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改备注</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name [<span class="keyword">ON</span> CLUSTER cluster] COMMENT <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name <span class="string">&#x27;some comment&#x27;</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> testtable COMMENT <span class="keyword">COLUMN</span> key <span class="string">&#x27;主键ID&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除已有字段</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> [IF <span class="keyword">EXISTS</span>] name;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> tb_name <span class="keyword">DROP</span> <span class="keyword">COLUMN</span> key;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改数据表名称</span></span><br><span class="line">RENAME <span class="keyword">TABLE</span> default.testcol_v1 <span class="keyword">TO</span> db_test.testcol_v2</span><br></pre></td></tr></table></figure>
+        <h3 id="clickhouse常用命令"><a href="#clickhouse常用命令" class="headerlink" title="clickhouse常用命令"></a>clickhouse常用命令</h3><ul>
+<li><p>ALTER</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 改变表结构</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> [db].name [<span class="keyword">ON</span> CLUSTER cluster] <span class="keyword">ADD</span><span class="operator">|</span><span class="keyword">DROP</span><span class="operator">|</span>CLEAR<span class="operator">|</span>COMMENT<span class="operator">|</span>MODIFY <span class="keyword">COLUMN</span> ...</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/alter/#alter_add-column">ADD COLUMN</a> — 添加列</li>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/alter/#alter_drop-column">DROP COLUMN</a> — 删除列</li>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/alter/#alter_clear-column">CLEAR COLUMN</a> — 重置列的值</li>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/alter/#alter_comment-column">COMMENT COLUMN</a> — 给列增加注释说明</li>
+<li><a target="_blank" rel="noopener" href="https://clickhouse.com/docs/zh/sql-reference/statements/alter/#alter_modify-column">MODIFY COLUMN</a> — 改变列的值类型，默认表达式以及TTL</li>
+</ul>
+</li>
+<li><p>DROP</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除现有实体，需要同步删除可以添加 sync</span></span><br><span class="line"><span class="keyword">DROP</span> DATABASE [IF <span class="keyword">EXISTS</span>] db [<span class="keyword">ON</span> CLUSTER cluster] [SYNC]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>TRUNCATE</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 清空表数据</span></span><br><span class="line"><span class="keyword">TRUNCATE</span> <span class="keyword">TABLE</span> [IF <span class="keyword">EXISTS</span>] [db.]name [<span class="keyword">ON</span> CLUSTER cluster]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>RENAME</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 重命名</span></span><br><span class="line">RENAME DATABASE<span class="operator">|</span><span class="keyword">TABLE</span><span class="operator">|</span>DICTIONARY name <span class="keyword">TO</span> new_name [,...] [<span class="keyword">ON</span> CLUSTER cluster]</span><br></pre></td></tr></table></figure></li>
+</ul>
 
       </div>
       
@@ -221,7 +240,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">clickhouse常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">基本操作</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-text">clickhouse常用命令</span></a></li></ol>
       
     </div>
   </div>
