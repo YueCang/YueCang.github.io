@@ -11,8 +11,8 @@
   
   <title>
     
-      Flink源码阅读 
-      
+      Tag 
+       : hive
       
       |
     
@@ -110,171 +110,30 @@
 
 
       <div class="flex-container">
-        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
-<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+        <!-- 标签详情页，展示某个标签下的文章列表，url形式：https://yoursite/tags/某个标签/ -->
 
-
-  <!-- LaTex Display -->
-
+<div class="container tag-details">
+  <div class="content-title">
+    <h2>
+      <span>hive</span>
+    </h2>
+  </div>
   
-    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
-  
-  <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']]
-      }
-    }
-  </script>
-
-
-
-
-
-  <!-- clipboard -->
-
-  
-    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
-  
-  
-<script src="/js/codeCopy.js"></script>
-
-
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
-  <div class="container post-details" id="post-details">
-    <div class="post-content">
-      <div class="post-title">Flink源码阅读</div>
-      <div class="post-attach">
-        <span class="post-pubtime">
-          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2022-11-10 09:50:14
-        </span>
-        
-              <span class="post-tags">
-                <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="大数据">
-                    #大数据
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/flink/" title="flink">
-                    #flink
-                  </a>
-                </span>
-                
-              </span>
-          
+    <div class="post-list">
+      <div class="post-item" title="Hive相关优化">
+        <span class="time-m-d">2022-11-14</span>
+        <a href="/2022/11/14/Hive%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/">
+          <span>Hive相关优化</span>
+        </a>
       </div>
-      <div class="markdown-body">
-        <h2 id="一、项目导入"><a href="#一、项目导入" class="headerlink" title="一、项目导入"></a>一、项目导入</h2><ul>
-<li><p>从git上将源码clone下来</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/apache/flink.git</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>clone完成后，导入IDEA中</p>
-<ol>
-<li><img src="/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/1.png" alt="截屏2022-11-10 16.17.04"></li>
-<li>导入进来以后，需要配置Maven（如果使用IDEA自带Maven可以忽略）</li>
-<li><img src="/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/2.png" alt="截屏2022-11-10 16.19.36"></li>
-</ol>
-</li>
-<li><p>导入完成后，右侧会出现Maven图标</p>
-</li>
-</ul>
-<h2 id="二、主要内容"><a href="#二、主要内容" class="headerlink" title="二、主要内容"></a>二、主要内容</h2><h3 id="任务提交流程"><a href="#任务提交流程" class="headerlink" title="任务提交流程"></a>任务提交流程</h3><h3 id="组建通信"><a href="#组建通信" class="headerlink" title="组建通信"></a>组建通信</h3><h3 id="任务调度"><a href="#任务调度" class="headerlink" title="任务调度"></a>任务调度</h3><h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3>
-      </div>
-      
-        <div class="prev-or-next">
-          <div class="post-foot-next">
-            
-              <a href="/2022/11/09/Zookeeper/" target="_self">
-                <i class="iconfont icon-chevronleft"></i>
-                <span>Prev</span>
-              </a>
-            
-          </div>
-          <div class="post-attach">
-            <span class="post-pubtime">
-              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2022-11-10 09:50:14
-            </span>
-            
-                  <span class="post-tags">
-                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" title="大数据">
-                        #大数据
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/flink/" title="flink">
-                        #flink
-                      </a>
-                    </span>
-                    
-                  </span>
-              
-          </div>
-          <div class="post-foot-prev">
-            
-              <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
-            
-          </div>
-        </div>
-      
     </div>
-    
-  <div id="btn-catalog" class="btn-catalog">
-    <i class="iconfont icon-catalog"></i>
-  </div>
-  <div class="post-catalog hidden" id="catalog">
-    <div class="title">Contents</div>
-    <div class="catalog-content">
-      
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E9%A1%B9%E7%9B%AE%E5%AF%BC%E5%85%A5"><span class="toc-text">一、项目导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="toc-text">二、主要内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B"><span class="toc-text">任务提交流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%BB%BA%E9%80%9A%E4%BF%A1"><span class="toc-text">组建通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="toc-text">任务调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">内存管理</span></a></li></ol></li></ol>
-      
-    </div>
-  </div>
-
   
-<script src="/js/catalog.js"></script>
-
-
-
-
+  <nav class="post-navigation">
     
-      <div class="comments-container">
-        
-
-
-
-
-
-
-
-      </div>
+    <span class="page-num">1 / 1</span>
     
-  </div>
-
+  </nav>
+</div>
 
         
 <div class="footer">
@@ -522,24 +381,6 @@
 
 
         
-  
-    <div class="share-icon tools-bar-item">
-      <a href="javascript: void(0)" id="share-icon">
-        <i class="iconfont iconshare"></i>
-      </a>
-      <div class="share-content hidden">
-        
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F10%2FFlink%25E6%25BA%2590%25E7%25A0%2581%25E9%2598%2585%25E8%25AF%25BB%2F + '" target="_blank" title="Twitter">
-            <i class="iconfont icon-twitter"></i>
-          </a>
-        
-        
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" target="_blank" title="Facebook">
-            <i class="iconfont icon-facebooksquare"></i>
-          </a>
-        
-      </div>
-    </div>
   
   
 <script src="/js/shares.js"></script>
