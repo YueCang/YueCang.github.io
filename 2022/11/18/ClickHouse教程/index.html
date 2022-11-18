@@ -159,7 +159,7 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2022-11-09 14:46:25
+          2022-11-18 10:21:31
         </span>
         
               <span class="post-tags">
@@ -282,7 +282,7 @@
 <li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linlf03/p/15392198.html">3分片2副本3节点，涉及到单节点双实例配置</a></li>
 </ul>
 <p><strong>集群2分片，其中1分片2副本，1分片1副本</strong></p>
-<p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1648795270372.png" alt="1648795270372"></p>
+<p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1648795270372-8738103.png" alt="1648795270372"></p>
 <ul>
 <li><p><strong>在&#x2F;etc&#x2F;clickhouse-server&#x2F;config.d创建<code>metrika.xml</code>，内容如下</strong></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">yandex</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">remote_servers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--集群名称--&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">clickhouse_cluster</span>&gt;</span> </span><br><span class="line">            <span class="comment">&lt;!--集群的第一个分片--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">shard</span>&gt;</span> </span><br><span class="line">                <span class="comment">&lt;!--副本之间内部同步打开--&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">internal_replication</span>&gt;</span>true<span class="tag">&lt;/<span class="name">internal_replication</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--该分片的第一个副本--&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">replica</span>&gt;</span> </span><br><span class="line">                     <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop102<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">                     <span class="tag">&lt;<span class="name">port</span>&gt;</span>9000<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;/<span class="name">replica</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--该分片的第二个副本--&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">replica</span>&gt;</span> </span><br><span class="line">                     <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop103<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">                     <span class="tag">&lt;<span class="name">port</span>&gt;</span>9000<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;/<span class="name">replica</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">shard</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--集群的第二个分片--&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">shard</span>&gt;</span> </span><br><span class="line">                 <span class="tag">&lt;<span class="name">internal_replication</span>&gt;</span>true<span class="tag">&lt;/<span class="name">internal_replication</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">replica</span>&gt;</span> </span><br><span class="line">                     <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop104<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">                     <span class="tag">&lt;<span class="name">port</span>&gt;</span>9000<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;/<span class="name">replica</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">shard</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">clickhouse_cluster</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">remote_servers</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 不同节点需要对应进行修改 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">macros</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">shard</span>&gt;</span>01<span class="tag">&lt;/<span class="name">shard</span>&gt;</span> <span class="comment">&lt;!--不同机器放的分片数不一样--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">replica</span>&gt;</span>rep_1_1<span class="tag">&lt;/<span class="name">replica</span>&gt;</span> <span class="comment">&lt;!--不同机器放的副本数不一样--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">macros</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!-- 对外开放所有地址 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">networks</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="name">ip</span>&gt;</span>::/0<span class="tag">&lt;/<span class="name">ip</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">networks</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 数据压缩 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">clickhouse_compression</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">case</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">min_part_size</span>&gt;</span>10000000000<span class="tag">&lt;/<span class="name">min_part_size</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">min_part_size_ratio</span>&gt;</span>0.01<span class="tag">&lt;/<span class="name">min_part_size_ratio</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">method</span>&gt;</span>lz4<span class="tag">&lt;/<span class="name">method</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">case</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">clickhouse_compression</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">zookeeper-servers</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">node</span> <span class="attr">index</span>=<span class="string">&quot;1&quot;</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop102<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">port</span>&gt;</span>2181<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">node</span> <span class="attr">index</span>=<span class="string">&quot;2&quot;</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop103<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">port</span>&gt;</span>2181<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">node</span> <span class="attr">index</span>=<span class="string">&quot;3&quot;</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">host</span>&gt;</span>hadoop104<span class="tag">&lt;/<span class="name">host</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">port</span>&gt;</span>2181<span class="tag">&lt;/<span class="name">port</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">zookeeper-servers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">yandex</span>&gt;</span></span><br></pre></td></tr></table></figure>
@@ -460,7 +460,7 @@
 </li>
 </ul>
 <h2 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h2><h3 id="副本写入流程"><a href="#副本写入流程" class="headerlink" title="副本写入流程"></a>副本写入流程</h3><p><code>clickhouse-a，clickhouse-b互为副本没有主从之分</code></p>
-<p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1647501880366.png" alt="1647501880366"></p>
+<p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1647501880366-8738103.png" alt="1647501880366"></p>
 <h3 id="副本启动"><a href="#副本启动" class="headerlink" title="副本启动"></a>副本启动</h3><ol>
 <li><p>启动zookeeper集群</p>
 </li>
@@ -486,8 +486,8 @@
 <p>要解决数据水平切分问题，需要引入分片的概念。通过分片把一份完整的数据进行切分，不同的分片分布到不同的节点上，再通过Distributed表引擎把数据拼接起来一同使用</p>
 <p><strong>Distributed表引擎本身不存储数据，数据存储在节点本地存储系统中</strong>，有点类似MyCat之于MySql，成为一种中间件，通过分布式逻辑表来写入、分发、路由来操作多台节点不同分片的分布式数据</p>
 <p><code>Notes：Clickhouse的集群是表级别的，实际企业中，大部分做了高可用，但是没有用分片，避免降低查询性能以及集群操作的复杂性</code></p>
-<h3 id="集群写入流程"><a href="#集群写入流程" class="headerlink" title="集群写入流程"></a>集群写入流程</h3><p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1648779049635.png" alt="1648779049635"></p>
-<h3 id="集群读取流程"><a href="#集群读取流程" class="headerlink" title="集群读取流程"></a>集群读取流程</h3><p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1648779096352.png" alt="1648779096352"></p>
+<h3 id="集群写入流程"><a href="#集群写入流程" class="headerlink" title="集群写入流程"></a>集群写入流程</h3><p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1648779049635-8738103.png" alt="1648779049635"></p>
+<h3 id="集群读取流程"><a href="#集群读取流程" class="headerlink" title="集群读取流程"></a>集群读取流程</h3><p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1648779096352-8738103.png" alt="1648779096352"></p>
 <p><strong>三分片两副本配置（可以配置六台节点也可以配置三台节点仅供参考）</strong></p>
 <ul>
 <li><p>在<code>/etc/clickhouse-server/config.d</code>下配置在<code>metrika.xml</code>中，内容如下</p>
@@ -512,8 +512,8 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> st_order_rmt666_all <span class="keyword">values</span></span><br><span class="line">(<span class="number">201</span>,<span class="string">&#x27;sku_001&#x27;</span>,<span class="number">1000.00</span>,<span class="string">&#x27;2020-06-01 12:00:00&#x27;</span>) ,</span><br><span class="line">(<span class="number">202</span>,<span class="string">&#x27;sku_002&#x27;</span>,<span class="number">2000.00</span>,<span class="string">&#x27;2020-06-01 12:00:00&#x27;</span>),</span><br><span class="line">(<span class="number">203</span>,<span class="string">&#x27;sku_004&#x27;</span>,<span class="number">2500.00</span>,<span class="string">&#x27;2020-06-01 12:00:00&#x27;</span>),</span><br><span class="line">(<span class="number">204</span>,<span class="string">&#x27;sku_002&#x27;</span>,<span class="number">2000.00</span>,<span class="string">&#x27;2020-06-01 12:00:00&#x27;</span>),</span><br><span class="line">(<span class="number">205</span>,<span class="string">&#x27;sku_003&#x27;</span>,<span class="number">600.00</span>,<span class="string">&#x27;2020-06-02 12:00:00&#x27;</span>);</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查看数据</p>
-<p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1648799917430.png" alt="1648799917430"></p>
-<p><img src="/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/1648800591071.png" alt="1648800591071"></p>
+<p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1648799917430-8738103.png" alt="1648799917430"></p>
+<p><img src="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/1648800591071-8738103.png" alt="1648800591071"></p>
 </li>
 </ul>
 <h1 id="Clickhouse高级"><a href="#Clickhouse高级" class="headerlink" title="Clickhouse高级"></a>Clickhouse高级</h1><h2 id="Explain查看执行计划"><a href="#Explain查看执行计划" class="headerlink" title="Explain查看执行计划"></a>Explain查看执行计划</h2><p>在 clickhouse 20.6 版本之前要查看 SQL 语句的执行计划需要设置日志级别为 trace 才能可以看到，并且只能真正执行 sql，在执行日志里面查看。在 20.6 版本引入了原生的执行计划的语法。在 <strong>20.6.3 版本</strong>成为正式版本的功能。 </p>
@@ -913,11 +913,16 @@
         <div class="prev-or-next">
           <div class="post-foot-next">
             
+              <a href="/2022/11/14/Hive%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
           </div>
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2022-11-09 14:46:25
+              2022-11-18 10:21:31
             </span>
             
                   <span class="post-tags">
@@ -939,11 +944,6 @@
               
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2022/11/09/Zookeeper/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -1236,12 +1236,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + ClickHouse%E6%95%99%E7%A8%8B + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F09%2FClickhouse%25E6%2595%2599%25E7%25A8%258B%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + ClickHouse%E6%95%99%E7%A8%8B + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F11%2F18%2FClickHouse%25E6%2595%2599%25E7%25A8%258B%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/09/Clickhouse%E6%95%99%E7%A8%8B/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
