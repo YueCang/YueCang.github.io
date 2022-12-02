@@ -11,7 +11,7 @@
   
   <title>
     
-      archive_a: 2022 
+      Hive设置yarn上任务名称 
       
       
       |
@@ -110,95 +110,158 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2022</span>
-          </h2>
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">Hive设置yarn上任务名称</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2022-12-02 11:51:12
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/hive/" title="hive">
+                    #hive
+                  </a>
+                </span>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E9%9A%8F%E7%AC%94%E8%AE%B0/" title="随笔记">
+                    #随笔记
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>在查看yarn任务时，只能看到application_id，无法直接根据application_name得知是哪个任务，设置job_name</p>
+<h3 id="设置参数"><a href="#设置参数" class="headerlink" title="设置参数"></a>设置参数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">mapreduce引擎</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">yarn1</span></span><br><span class="line">set mapred.job.name=xxx;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">yarn2</span></span><br><span class="line">set mapreduce.job.name=xxx;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">spark引擎</span></span><br><span class="line">set spark.app.name=xxx;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">tez引擎 - 注意tez写死了job_name是 <span class="string">&quot;HIVE-&quot;</span> + sessionId 需要进行源码修改</span></span><br><span class="line">tez.job.name=tezAppName;</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">或者 通过session_id来指定，会自动带上 HIVE- 前缀</span></span><br><span class="line">hive --hiveconf hive.session.id=tezAppName </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/ShrCheng/article/details/108783913">Tez自定义任务名称</a></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2022/11/30/Docker%E6%95%99%E7%A8%8B/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2022-12-02 11:51:12
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/hive/" title="hive">
+                        #hive
+                      </a>
+                    </span>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E9%9A%8F%E7%AC%94%E8%AE%B0/" title="随笔记">
+                        #随笔记
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
       
-      <div class="post-item" title="Hive设置yarn上任务名称">
-        <div class="time-m-d">12-02</div>
-        <div class="title">
-          <a href="/2022/12/02/Hive%E8%AE%BE%E7%BD%AEyarn%E4%B8%8A%E4%BB%BB%E5%8A%A1%E5%90%8D%E7%A7%B0/">
-            <span>Hive设置yarn上任务名称</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="Docker教程">
-        <div class="time-m-d">11-30</div>
-        <div class="title">
-          <a href="/2022/11/30/Docker%E6%95%99%E7%A8%8B/">
-            <span>Docker教程</span>
-          </a>
-        </div>
-      </div>
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-text">说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="toc-text">设置参数</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
     
-      <div class="post-item" title="ClickHouse教程">
-        <div class="time-m-d">11-18</div>
-        <div class="title">
-          <a href="/2022/11/18/ClickHouse%E6%95%99%E7%A8%8B/">
-            <span>ClickHouse教程</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hive相关优化">
-        <div class="time-m-d">11-14</div>
-        <div class="title">
-          <a href="/2022/11/14/Hive%E7%9B%B8%E5%85%B3%E4%BC%98%E5%8C%96/">
-            <span>Hive相关优化</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hexo常用命令">
-        <div class="time-m-d">11-11</div>
-        <div class="title">
-          <a href="/2022/11/11/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-            <span>Hexo常用命令</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="ClickHouse常用命令">
-        <div class="time-m-d">11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Clickhouse%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-            <span>ClickHouse常用命令</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Flink源码阅读">
-        <div class="time-m-d">11-10</div>
-        <div class="title">
-          <a href="/2022/11/10/Flink%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
-            <span>Flink源码阅读</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Zookeeper教程">
-        <div class="time-m-d">11-09</div>
-        <div class="title">
-          <a href="/2022/11/09/Zookeeper/">
-            <span>Zookeeper教程</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         
 <div class="footer">
@@ -446,6 +509,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Hive%E8%AE%BE%E7%BD%AEyarn%E4%B8%8A%E4%BB%BB%E5%8A%A1%E5%90%8D%E7%A7%B0 + '&url=' + http%3A%2F%2Fexample.com%2F2022%2F12%2F02%2FHive%25E8%25AE%25BE%25E7%25BD%25AEyarn%25E4%25B8%258A%25E4%25BB%25BB%25E5%258A%25A1%25E5%2590%258D%25E7%25A7%25B0%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2022/12/02/Hive%E8%AE%BE%E7%BD%AEyarn%E4%B8%8A%E4%BB%BB%E5%8A%A1%E5%90%8D%E7%A7%B0/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
