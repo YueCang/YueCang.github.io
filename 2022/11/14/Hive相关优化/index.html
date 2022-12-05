@@ -183,7 +183,17 @@
           
       </div>
       <div class="markdown-body">
-        <h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><h3 id="mapjoin"><a href="#mapjoin" class="headerlink" title="mapjoin"></a>mapjoin</h3>
+        <h2 id="SQL优化（针对MR引擎）"><a href="#SQL优化（针对MR引擎）" class="headerlink" title="SQL优化（针对MR引擎）"></a>SQL优化（针对MR引擎）</h2><h3 id="with-as多次使用同一张表"><a href="#with-as多次使用同一张表" class="headerlink" title="with as多次使用同一张表"></a>with as多次使用同一张表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">explain</span><br><span class="line"><span class="keyword">with</span> a <span class="keyword">as</span> (</span><br><span class="line">     <span class="keyword">SELECT</span>  id</span><br><span class="line">            <span class="keyword">FROM</span>  b</span><br><span class="line"> </span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> id <span class="keyword">from</span> a <span class="keyword">join</span> c <span class="keyword">on</span> a.id <span class="operator">=</span> c.id</span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> id <span class="keyword">from</span> a <span class="keyword">join</span> d <span class="keyword">on</span> a.id <span class="operator">=</span> d.id</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>参数优化</p>
+<blockquote>
+<p>hive.optimize.cte.materialize.threshold</p>
+</blockquote>
+<p> 这个参数在默认情况下是-1（关闭的）；当开启（大于0），比如设置为2，则如果with..as语句被引用2次及以上时，会把with..as语句生成的table物化，从而做到with..as语句只执行一次，来提高效率</p>
+</li>
+</ul>
+
       </div>
       
         <div class="prev-or-next">
@@ -238,7 +248,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E4%BC%98%E5%8C%96"><span class="toc-text">SQL优化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mapjoin"><span class="toc-text">mapjoin</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E4%BC%98%E5%8C%96%EF%BC%88%E9%92%88%E5%AF%B9MR%E5%BC%95%E6%93%8E%EF%BC%89"><span class="toc-text">SQL优化（针对MR引擎）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#with-as%E5%A4%9A%E6%AC%A1%E4%BD%BF%E7%94%A8%E5%90%8C%E4%B8%80%E5%BC%A0%E8%A1%A8"><span class="toc-text">with as多次使用同一张表</span></a></li></ol></li></ol>
       
     </div>
   </div>
