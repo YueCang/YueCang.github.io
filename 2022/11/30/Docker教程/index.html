@@ -193,6 +193,16 @@
 
 <h3 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker image <span class="built_in">rm</span> [选项] &lt;镜像1&gt; [&lt;镜像2&gt; ...]</span></span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>删除镜像前需要先把容器停止，并删除</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止容器</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker container stop &lt;CONTAINER ID&gt;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除容器</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker container <span class="built_in">rm</span> &lt;CONTAINER ID&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除镜像时，可能依赖镜像，**-f**进行强制删除</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker image rmi -f &lt;IMAGE ID&gt;</span></span><br></pre></td></tr></table></figure>
+
 
 
 <h3 id="容器操作"><a href="#容器操作" class="headerlink" title="容器操作"></a>容器操作</h3><h4 id="检查容器安全性"><a href="#检查容器安全性" class="headerlink" title="检查容器安全性"></a>检查容器安全性</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker run trivy image ubantu</span></span><br></pre></td></tr></table></figure>
