@@ -186,6 +186,37 @@
         <ul>
 <li>参考文档：<a target="_blank" rel="noopener" href="https://kiwenlau.com/2016/06/12/160612-hadoop-cluster-docker-update/">https://kiwenlau.com/2016/06/12/160612-hadoop-cluster-docker-update/</a></li>
 </ul>
+<h2 id="构建docker镜像"><a href="#构建docker镜像" class="headerlink" title="构建docker镜像"></a>构建docker镜像</h2><ol>
+<li><p>下载镜像所需要的配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/YueCang/docker-hadoop.git</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>下载hadoop压缩包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget -b https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-3.3.1/hadoop-3.3.1.tar.gz .</span><br><span class="line"></span><br><span class="line">mkdir tar</span><br><span class="line">mv hadoop-3.3.1.tar.gz tar/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在docker-hadoop路径下创建 tar，并将下载的hadoop移动进去</li>
+</ul>
+</li>
+<li><p>进行镜像的构建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker build -t cang13146/hadoop .</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看镜像</span></span><br><span class="line">docker images</span><br><span class="line"></span><br><span class="line">REPOSITORY         TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">cang13146/hadoop         latest    621b8ea781ed   7 hours ago     2.57GB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在Dockerfile文件路径下构建镜像</li>
+</ul>
+</li>
+</ol>
+<h2 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h2><ol>
+<li><p>启动容器前，我们需要构建容器的网络</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker network create --driver=bridge hadoop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看网络构建情况</span></span><br><span class="line">docker network ls</span><br><span class="line">NETWORK ID     NAME      DRIVER    SCOPE</span><br><span class="line">757e19bf44a4   hadoop    bridge    local</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/start-container.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在hadoop-master中启动hadoop集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动集群</span></span><br><span class="line">start-all.sh</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">停止集群</span></span><br><span class="line">stop-all.sh</span><br></pre></td></tr></table></figure></li>
+</ol>
 
       </div>
       
@@ -229,6 +260,23 @@
       
     </div>
     
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F"><span class="toc-text">构建docker镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E5%AE%B9%E5%99%A8"><span class="toc-text">启动容器</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
 
     
       <div class="comments-container">
